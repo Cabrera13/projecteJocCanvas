@@ -445,6 +445,7 @@ canvas {
         musicGame.pause();
         dead.play();
         sleep(1000);
+        myObstacles = [];
         musicGame.currentTime=0;
         myGameArea.clear();
         startGame();        
@@ -455,6 +456,9 @@ canvas {
         myGameArea.clear();
         drawbackground();
         myGameArea.frameNo += 1;
+        if (myObstacles.length == 0){
+            myObstacles.push(new component(100, 470 - 240, "blue", 470, 250));
+        }
         if (createblock) {
             createblock = false;
             x = myGameArea.canvas.width;
@@ -468,10 +472,7 @@ canvas {
             }
             myObstacles.push(new component(100, x - midaFinal, "blue", x, midaFinal));
         }
-        if (myObstacles.length == 0) {
-             myObstacles.push(new component(100, 200, "blue", 480, 260));
-        }
-        if (myObstacles[numblocs].x+90<=480){
+        if (myObstacles[myObstacles.length-1].x+90<=480){
             createblock = true;
             numblocs+=1;
         }
