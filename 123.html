@@ -134,7 +134,17 @@ canvas {
         ctx = myGameArea.context;
         var sprite = backgroundMenuPrincipal[0]; 
         ctx.drawImage(imatge5, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w+100, sprite.h);  
+        sprite2 = new component("30px", "Consolas", "white", 350, 30, "text");
+        sprite2.text = "return";
+        sprite2.update();
+        myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
+            var mousePos = getCursorPositionMenuControls(myGameArea.canvas, evt);
+          }, false);
+            myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
+            var mousePos = getCursorPositionMenuControlsClick(myGameArea.canvas, evt);
+          }, false);
     }
+
     function drawbackground() {
         myGameArea.canvas.removeEventListener('mousemove', hola);
         myGameArea.canvas.removeEventListener('click', hola2);
@@ -425,17 +435,19 @@ canvas {
                 terra = 270;
             }        
             if (myGamePiece.x < 52.5){
-                posicionsDelMenu = 4;
-                musicGame.pause();
-                dead.play();
-                sleep(1000);
-                musicGame.currentTime=0;
-                clearInterval(myGameArea.interval);
-                myGameArea.clear();
-                myGameArea.start();           
+                death ();
             }
-
         }
+    }
+    function death () {
+        clearInterval(myGameArea.interval);
+        posicionsDelMenu = 4;
+        musicGame.pause();
+        dead.play();
+        sleep(1000);
+        musicGame.currentTime=0;
+        myGameArea.clear();
+        startGame();        
     }
     
     function updateGameArea() {
@@ -455,6 +467,9 @@ canvas {
                 midaFinal= getRandomInt(270,mida+10);
             }
             myObstacles.push(new component(100, x - midaFinal, "blue", x, midaFinal));
+        }
+        if (myObstacles.length == 0) {
+             myObstacles.push(new component(100, 200, "blue", 480, 260));
         }
         if (myObstacles[numblocs].x+90<=480){
             createblock = true;
