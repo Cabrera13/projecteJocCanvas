@@ -43,26 +43,34 @@ canvas {
 <img src="megamanlogo.png" id ="gamesprites6"/>
 
 <script>
+    //Images sprites
     var imatge = document.getElementById("gamesprites");
     var imatge2 = document.getElementById("gamesprites2");
     var imatge3 = document.getElementById("gamesprites3");
     var imatge4 = document.getElementById("gamesprites4");
     var imatge5 = document.getElementById("gamesprites5");
     var imatge6 = document.getElementById("gamesprites6");
-
+    //Musics
     var musicGame= document.getElementById("megamanMusic");
     var musicJump = document.getElementById("jump");
     var dead = document.getElementById("death");
+    //Arrays 
     var score = [];
     var allComponentScores = [];
     var array = [];
     var array2 = [];
-    var myGamePiece;
     var myObstacles = [];
+    //Game Piece
+    var myGamePiece;
+    //score of the game
     var myScore;
+    //Logic variable of sprites
     var numsprite = 1;
+    //Counnt position of Highscores
     var positionY = 0;
+    //Logical var of colisions
     var terra = 270;
+    //Sprites position
     var spriteLogo =[{x:0, y:0, w: 400, h:50}];
     var background=[
         {x:93, y:1, w: 480, h: 279},
@@ -79,14 +87,18 @@ canvas {
         {x:638,y:36,w:270,h:57},
         {x:657,y:126,w:280,h:119}
     ];
+    //Variable to determine in which menu we are
     var posicionsDelMenu = 0;
+    //Variable speed obstacles
     var blockspeed = 1;
-    
+    //Var obstacles creation
     var createblock = true;
-    
+    //Count var
     var count = 0;
+    //Colision var
     var crash;
 
+    //function to inicialize the game
     function startGame() {        
         myGamePiece = new component(19, 24, "none", 80, 480, "sprite");
         blockspeed = 1;
@@ -94,7 +106,7 @@ canvas {
         myScore = new component("20px", "Copperplate Gothic Light", "white", 300, 30, "text");
         myGameArea.start();             
     }
-    
+    //function variable to inicialize the canvas and all the function of every menu, and inicialize the context.
     var myGameArea = {
         canvas : document.createElement("canvas"),
         start : function() {
@@ -121,102 +133,15 @@ canvas {
                 gameOver();
             }
         },
+        //function to clear the canvas
         clear : function() {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
     }
-    function drawCreditMenu () {
-        myGameArea.canvas.removeEventListener('mousemove', hola);
-        myGameArea.canvas.removeEventListener('click', hola2);
-        ctx = myGameArea.context;
-        var sprite = backgroundMenuPrincipal[0]; 
-        ctx.drawImage(imatge4, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w-110, sprite.h-190);  
-        setTimeout(function() {posicionsDelMenu = 0; myGameArea.canvas.removeEventListener('mousemove', hola);myGameArea.canvas.removeEventListener('click', hola2);
-        myGameArea.clear(); myGameArea.start();}, 3000);
-    }
-    function gameOver() {
-        myGameArea.canvas.removeEventListener('mousemove', hola);
-        myGameArea.canvas.removeEventListener('click', hola2);
-        ctx = myGameArea.context;
-        var sprite = backgroundMenuPrincipal[0]; 
-        ctx.drawImage(imatge5, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w+100, sprite.h);  
-        sprite2 = new component("30px", "Copperplate Gothic Light", "white", 350, 260, "text");
-        sprite2.text = "return";
-        sprite2.update();
-
-        score.sort(function(a,b) { return b - a; });
-        if (score.length > 5) {
-            score.pop();
-        }
-
-        score.map((elem, i) => {
-            allComponentScores.push(new component("20px", "Impact", "white", 200, 160+positionY, "text" ));
-            allComponentScores[i].text = score[i];
-            allComponentScores[i].update();
-            positionY+= 20;
-        });
+    //function to draw the credit menú where we use a sleep function to go out of this menu in 3 seconds, and we go back to myGameArea and change the position of the menu to 0 to go back to the principal menu
 
 
-
-        myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
-            var mousePos = getCursorDeadMenu(myGameArea.canvas, evt);
-          }, false);
-            myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
-            var mousePos = getCursorDeadMenuclick(myGameArea.canvas, evt);
-          }, false);
-    }
-    function getCursorDeadMenu () {
-            var rect = myGameArea.canvas.getBoundingClientRect();
-            var x = event.clientX - rect.left;
-            var y = event.clientY - rect.top;  
-            if ((x >=353) && (y >= 244) && (x<=461) && (y <= 261)) {
-                array[3] = new component("30px", "Copperplate Gothic Light", "red", 350, 260, "text");
-                array[3].text="return";
-                array[3].update();
-            }          
-            else {
-                array[3] = new component("30px", "Copperplate Gothic Light", "white", 350, 260, "text");
-                array[3].text="return";
-                array[3].update();       
-            }
-            console.log("x: " + x + " y: " + y);        
-    }
-    function getCursorDeadMenuclick () {
-        var rect = myGameArea.canvas.getBoundingClientRect();
-        var x = event.clientX - rect.left;
-        var y = event.clientY - rect.top;
-        if ((x >=353) && (y >= 244) && (x<=461) && (y <= 261)) {
-            posicionsDelMenu = 0;
-            myGameArea.canvas.removeEventListener('mousemove', hola);
-            myGameArea.canvas.removeEventListener('click', hola2);
-            myGameArea.clear();
-            myGameArea.start();
-        }
-        console.log("x: " + x + " y: " + y);        
-    }
-    function drawbackground() {
-        myGameArea.canvas.removeEventListener('mousemove', hola);
-        myGameArea.canvas.removeEventListener('click', hola2);
-        ctx = myGameArea.context;
-        var sprite = background[0]; 
-        ctx.drawImage(imatge, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w+10, sprite.h);  
-}
-    function drawStaticBackgroundControls () {
-        myGameArea.canvas.removeEventListener('mousemove', hola);
-        myGameArea.canvas.removeEventListener('click', hola2);
-        ctx = myGameArea.context;
-        var sprite = backgroundMenuPrincipal[0]; 
-        ctx.drawImage(imatge3, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w-110, sprite.h-190);  
-        sprite2 = new component("30px", "Copperplate Gothic Light", "white", 350, 30, "text");
-        sprite2.text = "return";
-        sprite2.update();
-        myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
-            var mousePos = getCursorPositionMenuControls(myGameArea.canvas, evt);
-          }, false);
-            myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
-            var mousePos = getCursorPositionMenuControlsClick(myGameArea.canvas, evt);
-          }, false);
-    }
+    //function to draw the background of the first game screen, and all the interaction with it
     function drawbackground2() {
         ctx = myGameArea.context;
         var sprite = backgroundMenuPrincipal[0]; 
@@ -241,100 +166,202 @@ canvas {
             myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
             var mousePos = getCursorPosition2(myGameArea.canvas, evt);
           }, false);
-}
-        function getCursorPositionMenuControls (canvas, event) {
+    }
+        //interaction with the letters in the start menu of the game
+    function getCursorPosition(canvas, event) {
+        var rect = myGameArea.canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+        if ((x >=192) && (y >= 81) && (x<=300) && (y <= 99)) {
+            array[0] = new component("30px", "Copperplate Gothic Light", "red", 190, 100, "text");
+            array[0].text="START";
+            array[0].update();
+        }
+        else {
+            array[0] = new component("30px", "Copperplate Gothic Light", "white", 190, 100, "text");
+            array[0] .text="START";
+            array[0] .update();
+
+        }
+        if ((x >=131) && (y >= 140) && (x<=364) && (y <= 162)) {
+            array[1] = new component("30px", "Copperplate Gothic Light", "red", 130, 160, "text");
+            array[1].text="HELP SCREEN";
+            array[1].update();
+        }
+        else {
+            array[1] = new component("30px", "Copperplate Gothic Light", "white", 130, 160, "text");
+            array[1].text="HELP SCREEN";
+            array[1].update();
+        }
+        if ((x >=172) && (y >= 199) && (x<=316) && (y <= 220)) {
+            array[2] = new component("30px", "Copperplate Gothic Light", "red", 170, 220, "text");
+            array[2].text="CREDITS";
+            array[2].update();
+        }
+        else {
+            array[2] = new component("30px", "Copperplate Gothic Light", "white", 170, 220, "text");
+            array[2].text="CREDITS";
+            array[2].update();
+        }
+        console.log("x: " + x + " y: " + y);
+    }
+    //click interaction to change the canvas in the first menu
+    function getCursorPosition2(canvas, event) {
+        var rect = myGameArea.canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+        if ((x >=192) && (y >= 81) && (x<=300) && (y <= 99)) {
+            posicionsDelMenu = 1;
+            myGameArea.clear();
+            myGameArea.start();
+        }
+        if ((x >=131) && (y >= 140) && (x<=364) && (y <= 162)) {
+            posicionsDelMenu = 2;
+            myGameArea.clear();
+            myGameArea.start();
+        }
+        if ((x >=172) && (y >= 199) && (x<=316) && (y <= 220)) {
+            posicionsDelMenu = 3;
+            myGameArea.clear();
+            myGameArea.start();
+        }
+
+        console.log("x: " + x + " y: " + y);
+    }
+    //function of the control menu and the interaction with it
+    function drawStaticBackgroundControls () {
+        myGameArea.canvas.removeEventListener('mousemove', hola);
+        myGameArea.canvas.removeEventListener('click', hola2);
+        ctx = myGameArea.context;
+        var sprite = backgroundMenuPrincipal[0]; 
+        ctx.drawImage(imatge3, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w-110, sprite.h-190);  
+        sprite2 = new component("30px", "Copperplate Gothic Light", "white", 350, 30, "text");
+        sprite2.text = "return";
+        sprite2.update();
+        myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
+            var mousePos = getCursorPositionMenuControls(myGameArea.canvas, evt);
+          }, false);
+            myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
+            var mousePos = getCursorPositionMenuControlsClick(myGameArea.canvas, evt);
+          }, false);
+    }
+    //menu interaction controls
+    function getCursorPositionMenuControls (canvas, event) {
+        var rect = myGameArea.canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;  
+        if ((x >=352) && (y >= 15) && (x<=448) && (y <= 31)) {
+            array[3] = new component("30px", "Copperplate Gothic Light", "red", 350, 30, "text");
+            array[3].text="return";
+            array[3].update();
+        }          
+        else {
+            array[3] = new component("30px", "Copperplate Gothic Light", "white", 350, 30, "text");
+            array[3].text="return";
+            array[3].update();       
+        }
+        console.log("x: " + x + " y: " + y);
+    }
+
+    //click interaction controls menu
+    function getCursorPositionMenuControlsClick(canvas, event) {
+        var rect = myGameArea.canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+        if ((x >=352) && (y >= 15) && (x<=448) && (y <= 31)) {
+            posicionsDelMenu = 0;
+            myGameArea.canvas.removeEventListener('mousemove', hola);
+            myGameArea.canvas.removeEventListener('click', hola2);
+            myGameArea.clear();
+            myGameArea.start();
+        }
+        console.log("x: " + x + " y: " + y);
+    }
+
+
+    function drawCreditMenu () {
+        myGameArea.canvas.removeEventListener('mousemove', hola);
+        myGameArea.canvas.removeEventListener('click', hola2);
+        ctx = myGameArea.context;
+        var sprite = backgroundMenuPrincipal[0]; 
+        ctx.drawImage(imatge4, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w-110, sprite.h-190);  
+        setTimeout(function() {posicionsDelMenu = 0; myGameArea.canvas.removeEventListener('mousemove', hola);myGameArea.canvas.removeEventListener('click', hola2);
+        myGameArea.clear(); myGameArea.start();}, 3000);
+    }
+    //function to draw the background in the update function, where is called.
+    function drawbackground() {
+        myGameArea.canvas.removeEventListener('mousemove', hola);
+        myGameArea.canvas.removeEventListener('click', hola2);
+        ctx = myGameArea.context;
+        var sprite = background[0]; 
+        ctx.drawImage(imatge, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w+10, sprite.h);  
+    }
+    //function to finish the game, where we remove the event listeners and update the highscores with a sorted array
+    function gameOver() {
+        myGameArea.canvas.removeEventListener('mousemove', hola);
+        myGameArea.canvas.removeEventListener('click', hola2);
+        ctx = myGameArea.context;
+        var sprite = backgroundMenuPrincipal[0]; 
+        ctx.drawImage(imatge5, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w+100, sprite.h);  
+        sprite2 = new component("30px", "Copperplate Gothic Light", "white", 350, 260, "text");
+        sprite2.text = "return";
+        sprite2.update();
+
+        score.sort(function(a,b) { return b - a; });
+        if (score.length > 5) {
+            score.pop();
+        }
+
+        score.map((elem, i) => {
+            allComponentScores.push(new component("20px", "Impact", "white", 200, 160+positionY, "text" ));
+            allComponentScores[i].text = score[i];
+            allComponentScores[i].update();
+            positionY+= 20;
+        });
+
+
+        //add event listeners for interact with the letters
+        myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
+            var mousePos = getCursorDeadMenu(myGameArea.canvas, evt);
+          }, false);
+            myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
+            var mousePos = getCursorDeadMenuclick(myGameArea.canvas, evt);
+          }, false);
+    }
+    //function to interact with the letters
+    function getCursorDeadMenu () {
             var rect = myGameArea.canvas.getBoundingClientRect();
             var x = event.clientX - rect.left;
             var y = event.clientY - rect.top;  
-            if ((x >=352) && (y >= 15) && (x<=448) && (y <= 31)) {
-                array[3] = new component("30px", "Copperplate Gothic Light", "red", 350, 30, "text");
+            if ((x >=353) && (y >= 244) && (x<=461) && (y <= 261)) {
+                array[3] = new component("30px", "Copperplate Gothic Light", "red", 350, 260, "text");
                 array[3].text="return";
                 array[3].update();
             }          
             else {
-                array[3] = new component("30px", "Copperplate Gothic Light", "white", 350, 30, "text");
+                array[3] = new component("30px", "Copperplate Gothic Light", "white", 350, 260, "text");
                 array[3].text="return";
                 array[3].update();       
             }
-            console.log("x: " + x + " y: " + y);
+            console.log("x: " + x + " y: " + y);        
+    }   
+    //function to click the letters and draw the other menu
+    function getCursorDeadMenuclick () {
+        var rect = myGameArea.canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+        if ((x >=353) && (y >= 244) && (x<=461) && (y <= 261)) {
+            posicionsDelMenu = 0;
+            myGameArea.canvas.removeEventListener('mousemove', hola);
+            myGameArea.canvas.removeEventListener('click', hola2);
+            myGameArea.clear();
+            myGameArea.start();
         }
-        function getCursorPosition(canvas, event) {
-            var rect = myGameArea.canvas.getBoundingClientRect();
-            var x = event.clientX - rect.left;
-            var y = event.clientY - rect.top;
-            if ((x >=192) && (y >= 81) && (x<=300) && (y <= 99)) {
-                array[0] = new component("30px", "Copperplate Gothic Light", "red", 190, 100, "text");
-                array[0].text="START";
-                array[0].update();
-            }
-            else {
-                array[0] = new component("30px", "Copperplate Gothic Light", "white", 190, 100, "text");
-                array[0] .text="START";
-                array[0] .update();
-
-            }
-            if ((x >=131) && (y >= 140) && (x<=364) && (y <= 162)) {
-                array[1] = new component("30px", "Copperplate Gothic Light", "red", 130, 160, "text");
-                array[1].text="HELP SCREEN";
-                array[1].update();
-            }
-            else {
-                array[1] = new component("30px", "Copperplate Gothic Light", "white", 130, 160, "text");
-                array[1].text="HELP SCREEN";
-                array[1].update();
-            }
-            if ((x >=172) && (y >= 199) && (x<=316) && (y <= 220)) {
-                array[2] = new component("30px", "Copperplate Gothic Light", "red", 170, 220, "text");
-                array[2].text="CREDITS";
-                array[2].update();
-            }
-            else {
-                array[2] = new component("30px", "Copperplate Gothic Light", "white", 170, 220, "text");
-                array[2].text="CREDITS";
-                array[2].update();
-            }
-            console.log("x: " + x + " y: " + y);
-        }
-        function getCursorPosition2(canvas, event) {
-            var rect = myGameArea.canvas.getBoundingClientRect();
-            var x = event.clientX - rect.left;
-            var y = event.clientY - rect.top;
-            if ((x >=192) && (y >= 81) && (x<=300) && (y <= 99)) {
-                posicionsDelMenu = 1;
-                myGameArea.clear();
-                myGameArea.start();
-            }
-            if ((x >=131) && (y >= 140) && (x<=364) && (y <= 162)) {
-                posicionsDelMenu = 2;
-                myGameArea.clear();
-                myGameArea.start();
-            }
-            if ((x >=172) && (y >= 199) && (x<=316) && (y <= 220)) {
-                posicionsDelMenu = 3;
-                myGameArea.clear();
-                myGameArea.start();
-            }
-
-            console.log("x: " + x + " y: " + y);
-        }
-        function getCursorPositionMenuControlsClick(canvas, event) {
-                    var rect = myGameArea.canvas.getBoundingClientRect();
-                    var x = event.clientX - rect.left;
-                    var y = event.clientY - rect.top;
-                    if ((x >=352) && (y >= 15) && (x<=448) && (y <= 31)) {
-                        posicionsDelMenu = 0;
-                        myGameArea.canvas.removeEventListener('mousemove', hola);
-                        myGameArea.canvas.removeEventListener('click', hola2);
-                        myGameArea.clear();
-                        myGameArea.start();
-                    }
-                    console.log("x: " + x + " y: " + y);
-                }
-
+        console.log("x: " + x + " y: " + y);        
+    }
     
-    
+    //function to draw the spikes sprite in the game 
     function drawspikes() {
-        
         ctx = myGameArea.context;
         var sprite = background[1]; 
         if (count < 10) {
@@ -349,7 +376,8 @@ canvas {
             }                           
         }
     }
-    
+    //constructor where is based all the logical of the objects, where we can build text, and items of the game, and all the logical and colisions.
+    //Here we built the GamePiece, all the text (Scores, Texts of the menu, ...), the obstacles and all the other items, also the colisions
     function component(width, height, color, x, y, type) {
         this.type = type;
         this.score = 0;
@@ -491,7 +519,10 @@ canvas {
             }
         }
     }
-    
+
+    //function to finish the game, we play a sound, inicialize the obstacles array to restart the game if the user want to go back and play again, and change the position menu, we also used a sleep to give information to the user to know what killed him, instead to jump instant to the last menu. 
+    //We also cleared the interval to finish the SetInterval, and pushed the score var to do the Highscore in the last menu.
+
     function death() {
         score.push(myGameArea.frameNo);
         clearInterval(myGameArea.interval);
@@ -506,7 +537,10 @@ canvas {
         myObstacles=[];
         createblock = true;
     }
-    
+
+    //here we updated all the game during the play.
+    //In this function, we create the obstacles, and we move it in a progresive speed using the var blockspeed, also we are doing here the animation of the spikes, the logical distance of the obstacles.
+    //Here we manage the obstacles in a array and delete it while the game advance.
     function updateGameArea() {
         var x, height, minHeight, maxHeight;
         myGameArea.clear();
@@ -553,7 +587,6 @@ canvas {
     }
     function sleep(miliseconds) {
        var currentTime = new Date().getTime();
-
        while (currentTime + miliseconds >= new Date().getTime()) {
        }
     }
