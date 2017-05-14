@@ -40,7 +40,7 @@ canvas {
 <img src="controls.png" id ="gamesprites3"/>
 <img src="credits.png" id ="gamesprites4"/>
 <img src="gameover.png" id ="gamesprites5"/>
-
+<img src="megamanlogo.png" id ="gamesprites6"/>
 
 <script>
     var imatge = document.getElementById("gamesprites");
@@ -48,6 +48,8 @@ canvas {
     var imatge3 = document.getElementById("gamesprites3");
     var imatge4 = document.getElementById("gamesprites4");
     var imatge5 = document.getElementById("gamesprites5");
+    var imatge6 = document.getElementById("gamesprites6");
+
     var musicGame= document.getElementById("megamanMusic");
     var musicJump = document.getElementById("jump");
     var dead = document.getElementById("death");
@@ -61,6 +63,7 @@ canvas {
     var numsprite = 1;
     var positionY = 0;
     var terra = 270;
+    var spriteLogo =[{x:0, y:0, w: 400, h:50}];
     var background=[
         {x:93, y:1, w: 480, h: 279},
         {x:24, y:49, w: 50, h: 145},
@@ -137,7 +140,7 @@ canvas {
         ctx = myGameArea.context;
         var sprite = backgroundMenuPrincipal[0]; 
         ctx.drawImage(imatge5, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w+100, sprite.h);  
-        sprite2 = new component("30px", "Copperplate Gothic Light", "white", 350, 30, "text");
+        sprite2 = new component("30px", "Copperplate Gothic Light", "white", 350, 260, "text");
         sprite2.text = "return";
         sprite2.update();
 
@@ -145,24 +148,52 @@ canvas {
         if (score.length > 5) {
             score.pop();
         }
-        localStorage.setItem("arrayScores", JSON.stringify(score));
-        var score2 = JSON.parse(localStorage.getItem("arrayScores"));
-        console.log(score2);
-        score2.map((elem, i) => {
+
+        score.map((elem, i) => {
             allComponentScores.push(new component("20px", "Impact", "white", 200, 160+positionY, "text" ));
-            allComponentScores[i].text = score2[i];
+            allComponentScores[i].text = score[i];
             allComponentScores[i].update();
             positionY+= 20;
         });
 
+
+
         myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
-            var mousePos = getCursorPositionMenuControls(myGameArea.canvas, evt);
+            var mousePos = getCursorDeadMenu(myGameArea.canvas, evt);
           }, false);
             myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
-            var mousePos = getCursorPositionMenuControlsClick(myGameArea.canvas, evt);
+            var mousePos = getCursorDeadMenuclick(myGameArea.canvas, evt);
           }, false);
     }
-
+    function getCursorDeadMenu () {
+            var rect = myGameArea.canvas.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;  
+            if ((x >=353) && (y >= 244) && (x<=461) && (y <= 261)) {
+                array[3] = new component("30px", "Copperplate Gothic Light", "red", 350, 260, "text");
+                array[3].text="return";
+                array[3].update();
+            }          
+            else {
+                array[3] = new component("30px", "Copperplate Gothic Light", "white", 350, 260, "text");
+                array[3].text="return";
+                array[3].update();       
+            }
+            console.log("x: " + x + " y: " + y);        
+    }
+    function getCursorDeadMenuclick () {
+        var rect = myGameArea.canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+        if ((x >=353) && (y >= 244) && (x<=461) && (y <= 261)) {
+            posicionsDelMenu = 0;
+            myGameArea.canvas.removeEventListener('mousemove', hola);
+            myGameArea.canvas.removeEventListener('click', hola2);
+            myGameArea.clear();
+            myGameArea.start();
+        }
+        console.log("x: " + x + " y: " + y);        
+    }
     function drawbackground() {
         myGameArea.canvas.removeEventListener('mousemove', hola);
         myGameArea.canvas.removeEventListener('click', hola2);
@@ -191,7 +222,9 @@ canvas {
         var sprite = backgroundMenuPrincipal[0]; 
         var sprite2 = backgroundMenuPrincipal[1]; 
         var sprite3 = backgroundMenuPrincipal[2];
+        sprite4 = spriteLogo[0];
         ctx.drawImage(imatge2, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w-110, sprite.h-190);  
+        ctx.drawImage(imatge6, sprite4.x-120, sprite4.y-40, sprite4.w+600, sprite4.h+240, 2, 2, sprite4.w, sprite4.h);
         array.push(new component("30px", "Copperplate Gothic Light", "white", 190, 100, "text"));
         array.push(new component("30px", "Copperplate Gothic Light", "white", 130, 160, "text"));
         array.push(new component("30px", "Copperplate Gothic Light", "white", 170, 220, "text"));
@@ -464,6 +497,7 @@ canvas {
         clearInterval(myGameArea.interval);
         posicionsDelMenu = 4;
         musicGame.pause();
+        dead.currentTime = 0.50;
         dead.play();
         sleep(1000);
         musicGame.currentTime=0;
