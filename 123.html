@@ -60,6 +60,7 @@ canvas {
     var array = [];
     var array2 = [];
     var myObstacles = [];
+    var myPunxes = [];
     //Game Piece
     var myGamePiece;
     //score of the game
@@ -87,6 +88,7 @@ canvas {
         {x:638,y:36,w:270,h:57},
         {x:657,y:126,w:280,h:119}
     ];
+    var punxes = [{x:20, y:210, w:25, h: 25}];
     //Variable to determine in which menu we are
     var posicionsDelMenu = 0;
     //Variable speed obstacles
@@ -99,7 +101,7 @@ canvas {
     var crash;
 
     //function to inicialize the game
-    function startGame() {        
+    startGame = () => {        
         myGamePiece = new component(19, 24, "none", 80, 480, "sprite");
         blockspeed = 1;
         myGamePiece.gravity = 0.1;
@@ -109,7 +111,7 @@ canvas {
     //function variable to inicialize the canvas and all the function of every menu, and inicialize the context.
     var myGameArea = {
         canvas : document.createElement("canvas"),
-        start : function() {
+        start () {
             this.canvas.width = 480;
             this.canvas.height = 270;
             this.canvas.style.top = "100";
@@ -134,15 +136,15 @@ canvas {
             }
         },
         //function to clear the canvas
-        clear : function() {
+        clear () {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
     }
-    //function to draw the credit menú where we use a sleep function to go out of this menu in 3 seconds, and we go back to myGameArea and change the position of the menu to 0 to go back to the principal menu
+
 
 
     //function to draw the background of the first game screen, and all the interaction with it
-    function drawbackground2() {
+    drawbackground2 = () => {
         ctx = myGameArea.context;
         var sprite = backgroundMenuPrincipal[0]; 
         var sprite2 = backgroundMenuPrincipal[1]; 
@@ -160,15 +162,15 @@ canvas {
         array[1].update();
         array[2].update();
 
-          myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
+          myGameArea.canvas.addEventListener('mousemove', hola =  (evt) => {
             var mousePos = getCursorPosition(myGameArea.canvas, evt);
           }, false);
-            myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
+            myGameArea.canvas.addEventListener('click', hola2 =  (evt) => {
             var mousePos = getCursorPosition2(myGameArea.canvas, evt);
           }, false);
     }
         //interaction with the letters in the start menu of the game
-    function getCursorPosition(canvas, event) {
+    getCursorPosition = (canvas, event) => {
         var rect = myGameArea.canvas.getBoundingClientRect();
         var x = event.clientX - rect.left;
         var y = event.clientY - rect.top;
@@ -203,10 +205,9 @@ canvas {
             array[2].text="CREDITS";
             array[2].update();
         }
-        console.log("x: " + x + " y: " + y);
     }
     //click interaction to change the canvas in the first menu
-    function getCursorPosition2(canvas, event) {
+    getCursorPosition2 = (canvas, event) => {
         var rect = myGameArea.canvas.getBoundingClientRect();
         var x = event.clientX - rect.left;
         var y = event.clientY - rect.top;
@@ -225,11 +226,9 @@ canvas {
             myGameArea.clear();
             myGameArea.start();
         }
-
-        console.log("x: " + x + " y: " + y);
     }
     //function of the control menu and the interaction with it
-    function drawStaticBackgroundControls () {
+    drawStaticBackgroundControls = () => {
         myGameArea.canvas.removeEventListener('mousemove', hola);
         myGameArea.canvas.removeEventListener('click', hola2);
         ctx = myGameArea.context;
@@ -238,15 +237,15 @@ canvas {
         sprite2 = new component("30px", "Copperplate Gothic Light", "white", 350, 30, "text");
         sprite2.text = "return";
         sprite2.update();
-        myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
+        myGameArea.canvas.addEventListener('mousemove', hola = (evt) => {
             var mousePos = getCursorPositionMenuControls(myGameArea.canvas, evt);
           }, false);
-            myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
+            myGameArea.canvas.addEventListener('click', hola2 =  (evt) => {
             var mousePos = getCursorPositionMenuControlsClick(myGameArea.canvas, evt);
           }, false);
     }
     //menu interaction controls
-    function getCursorPositionMenuControls (canvas, event) {
+     getCursorPositionMenuControls = (canvas, event) => {
         var rect = myGameArea.canvas.getBoundingClientRect();
         var x = event.clientX - rect.left;
         var y = event.clientY - rect.top;  
@@ -260,11 +259,10 @@ canvas {
             array[3].text="return";
             array[3].update();       
         }
-        console.log("x: " + x + " y: " + y);
     }
 
     //click interaction controls menu
-    function getCursorPositionMenuControlsClick(canvas, event) {
+     getCursorPositionMenuControlsClick = (canvas, event) => {
         var rect = myGameArea.canvas.getBoundingClientRect();
         var x = event.clientX - rect.left;
         var y = event.clientY - rect.top;
@@ -275,21 +273,20 @@ canvas {
             myGameArea.clear();
             myGameArea.start();
         }
-        console.log("x: " + x + " y: " + y);
     }
 
-
-    function drawCreditMenu () {
+    //function to draw the credit menú where we use a sleep function to go out of this menu in 3 seconds, and we go back to myGameArea and change the position of the menu to 0 to go back to the principal menu
+    drawCreditMenu = () => {
         myGameArea.canvas.removeEventListener('mousemove', hola);
         myGameArea.canvas.removeEventListener('click', hola2);
         ctx = myGameArea.context;
         var sprite = backgroundMenuPrincipal[0]; 
         ctx.drawImage(imatge4, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w-110, sprite.h-190);  
-        setTimeout(function() {posicionsDelMenu = 0; myGameArea.canvas.removeEventListener('mousemove', hola);myGameArea.canvas.removeEventListener('click', hola2);
+        setTimeout(() => {posicionsDelMenu = 0; myGameArea.canvas.removeEventListener('mousemove', hola);myGameArea.canvas.removeEventListener('click', hola2);
         myGameArea.clear(); myGameArea.start();}, 3000);
     }
     //function to draw the background in the update function, where is called.
-    function drawbackground() {
+     drawbackground = () => {
         myGameArea.canvas.removeEventListener('mousemove', hola);
         myGameArea.canvas.removeEventListener('click', hola2);
         ctx = myGameArea.context;
@@ -297,7 +294,7 @@ canvas {
         ctx.drawImage(imatge, sprite.x, sprite.y, sprite.w, sprite.h, -2, -2, sprite.w+10, sprite.h);  
     }
     //function to finish the game, where we remove the event listeners and update the highscores with a sorted array
-    function gameOver() {
+    gameOver = () => {
         myGameArea.canvas.removeEventListener('mousemove', hola);
         myGameArea.canvas.removeEventListener('click', hola2);
         ctx = myGameArea.context;
@@ -307,7 +304,7 @@ canvas {
         sprite2.text = "return";
         sprite2.update();
 
-        score.sort(function(a,b) { return b - a; });
+        score.sort((a,b) => { return b - a; });
         if (score.length > 5) {
             score.pop();
         }
@@ -321,15 +318,15 @@ canvas {
 
 
         //add event listeners for interact with the letters
-        myGameArea.canvas.addEventListener('mousemove', hola = function (evt) {
+        myGameArea.canvas.addEventListener('mousemove', hola = (evt) => {
             var mousePos = getCursorDeadMenu(myGameArea.canvas, evt);
           }, false);
-            myGameArea.canvas.addEventListener('click', hola2 = function (evt) {
+            myGameArea.canvas.addEventListener('click', hola2 = (evt) => {
             var mousePos = getCursorDeadMenuclick(myGameArea.canvas, evt);
           }, false);
     }
     //function to interact with the letters
-    function getCursorDeadMenu () {
+     getCursorDeadMenu = () => {
             var rect = myGameArea.canvas.getBoundingClientRect();
             var x = event.clientX - rect.left;
             var y = event.clientY - rect.top;  
@@ -343,10 +340,9 @@ canvas {
                 array[3].text="return";
                 array[3].update();       
             }
-            console.log("x: " + x + " y: " + y);        
     }   
     //function to click the letters and draw the other menu
-    function getCursorDeadMenuclick () {
+     getCursorDeadMenuclick = () => {
         var rect = myGameArea.canvas.getBoundingClientRect();
         var x = event.clientX - rect.left;
         var y = event.clientY - rect.top;
@@ -357,11 +353,10 @@ canvas {
             myGameArea.clear();
             myGameArea.start();
         }
-        console.log("x: " + x + " y: " + y);        
     }
     
     //function to draw the spikes sprite in the game 
-    function drawspikes() {
+    drawspikes = () => {
         ctx = myGameArea.context;
         var sprite = background[1]; 
         if (count < 10) {
@@ -378,7 +373,7 @@ canvas {
     }
     //constructor where is based all the logical of the objects, where we can build text, and items of the game, and all the logical and colisions.
     //Here we built the GamePiece, all the text (Scores, Texts of the menu, ...), the obstacles and all the other items, also the colisions
-    function component(width, height, color, x, y, type) {
+    function component(width, height, color, x, y, type = 'other') {
         this.type = type;
         this.score = 0;
         this.width = width;
@@ -391,8 +386,9 @@ canvas {
         this.gravitySpeed = 0;
         this.right = false;
         this.left = false;
-
-        this.update = function() {
+        
+            //function to determine the type of the instance parameter and draw/do some stuff about it with a update
+            this.update = () => {
             ctx = myGameArea.context;
             if (this.type == "sprite") {
                 var sprite = sprites[numsprite];    
@@ -407,8 +403,8 @@ canvas {
                 }
                 ctx.drawImage(imatge, sprite.x, sprite.y, sprite.w, sprite.h, this.x, this.y, sprite.w, sprite.h);
                 count+=1;
-                
-                document.body.onkeydown = function(event){
+
+                document.body.onkeydown = (event) => {
                     event = event || window.event;
                     var keycode = event.charCode || event.keyCode;
                     if(keycode === 32 || keycode === 87 || keycode === 38){
@@ -422,7 +418,7 @@ canvas {
                     }              
                 }
             
-                document.body.onkeyup = function(event){
+                document.body.onkeyup = (event) =>{
                     event = event || window.event;
                     var keycode = event.charCode || event.keyCode;
                     if(keycode === 39 || keycode === 68){
@@ -438,36 +434,72 @@ canvas {
                     myGamePiece.moveLeft();
                 
             }
+
+            else if  (this.type == "punx") {
+                ctx.drawImage(imatge, punxes[0].x, punxes[0].y, punxes[0].w, punxes[0].h, this.x, this.y, punxes[0].w, punxes[0].h);
+            }
             else if  (this.type == "text") {
                 ctx.font = this.width + " " + this.height;
                 ctx.fillStyle = color;
                 ctx.fillText(this.text, this.x, this.y);
-            } else {
+            } 
+            else {
                 ctx.drawImage(imatge, background[2].x, background[2].y, background[2].w, background[2].h, this.x, this.y, background[2].w, background[2].h);
             }
         }
-        this.newPos = function() {
+        //function to update the new position and the gravity
+        this.newPos = () => {
             this.gravitySpeed += this.gravity;
             this.y += this.speedY + this.gravitySpeed;
             this.hitBottom();
             this.hitObstacles();
-            
+            this.hitThePunx();
         }
-        this.hitBottom = function() {
+        //function to collide with the bottom
+        this.hitBottom = () => {
             var rockbottom = myGameArea.canvas.height - this.height;
             if (this.y > rockbottom) {
                 this.y = rockbottom;
             }
         }
-        this.hitObstacles = function() {
-            for (i = 0; i < myObstacles.length; i += 1) {
+        //function to inicialize the hit of the game obstacles
+        this.hitObstacles = () => {
+            myObstacles.map((elem, i) => {
                 if (myGamePiece.crashWith(myObstacles[i])) {
                     gravitySpeed = 0;
+                }                 
+            })
+
+        }
+        //function to inicialize the hit of the game colliders
+        this.hitThePunx = (otherobj) => {
+            myPunxes.map ((elem, i)=> {
+                if (myGamePiece.hitPunxes(myPunxes[i])) {
+                    death();
                 } 
+            });
+        }            
+        //function to determine the hit of the game colliders
+        this.hitPunxes = (otherobj) => {
+            var myleft = this.x;
+            var myright = this.x + (this.width);
+            var mytop = this.y;
+            var mybottom = this.y + (this.height);
+            var otherleft = otherobj.x;
+            var otherright = otherobj.x + (otherobj.width);
+            var othertop = otherobj.y;
+            var otherbottom = otherobj.y + (otherobj.height);
+            var crash = true;
+            var rockbottom2 = myGameArea.canvas.height - myGamePiece.height;
+            if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                crash = false;
+            }
+            if (crash) {
+                death();
             }
         }
-        
-        this.jump = function () {
+        //function to jump with the gamepiece
+        this.jump = () => {
             musicJump.pause();
             musicJump.currentTime=0.5;
             if (posicionsDelMenu == 1) {
@@ -475,21 +507,21 @@ canvas {
             this.gravitySpeed = -3;
         }
         }
-        
-        this.moveRight = function () {
+        //functions to move the gamepiece
+        this.moveRight = () => {
             if ((this.x+(this.width))<480)
                 this.x += 1;                
         }
-        this.moveLeft = function () {
+        this.moveLeft = () => {
             if (this.x>0)
                 this.x -= 1;                
         }
             
-        this.getright = function() {
+        this.getright = () => {
             return (this.x + (this.width));
         }
-        
-        this.crashWith = function(otherobj) {
+        //function to crash with the obstacles
+        this.crashWith = (otherobj) => {
             var myleft = this.x;
             var myright = this.x + (this.width);
             var mytop = this.y;
@@ -523,7 +555,7 @@ canvas {
     //function to finish the game, we play a sound, inicialize the obstacles array to restart the game if the user want to go back and play again, and change the position menu, we also used a sleep to give information to the user to know what killed him, instead to jump instant to the last menu. 
     //We also cleared the interval to finish the SetInterval, and pushed the score var to do the Highscore in the last menu.
 
-    function death() {
+    death = () => {
         score.push(myGameArea.frameNo);
         clearInterval(myGameArea.interval);
         posicionsDelMenu = 4;
@@ -535,13 +567,14 @@ canvas {
         myGameArea.clear();
         startGame();
         myObstacles=[];
+        myPunxes= [];
         createblock = true;
     }
 
     //here we updated all the game during the play.
     //In this function, we create the obstacles, and we move it in a progresive speed using the var blockspeed, also we are doing here the animation of the spikes, the logical distance of the obstacles.
     //Here we manage the obstacles in a array and delete it while the game advance.
-    function updateGameArea() {
+    updateGameArea = () => {
         var x, height, minHeight, maxHeight;
         myGameArea.clear();
         drawbackground();
@@ -557,19 +590,39 @@ canvas {
                 mida = myObstacles[myObstacles.length-1].height;
                 midaFinal= getRandomInt(270,mida+10);
             }
+            //Pushing the Obstacles
             myObstacles.push(new component(100, x - midaFinal, "blue", x, midaFinal));
+            var random = 0;
+            random = getRandomInt(0,2);
+            //Pushing the component colliders random to a array
+            if (random == 2) {
+                myPunxes.push(new component(25, 25, "blue", myObstacles[myObstacles.length-1].x+getRandomInt(20,60), myObstacles[myObstacles.length-1].y-25, "punx"));
+            }
+
+            
         }
         if (myObstacles[myObstacles.length-1].x+90<=480){
             createblock = true;
         }
-        for (i = 0; i < myObstacles.length; i += 1) {
+        //map to update the speed and inicialize the update of the constructor
+        myObstacles.map ((elem, i) => {
             myObstacles[i].x += -blockspeed;
             myObstacles[i].update();
             if (blockspeed<8)
                 blockspeed=blockspeed*1.00001;
             else
                 blockspeed=8
-        }
+        });
+        //map to update the speed of the object coliders and inicialize the update of the constructor
+        myPunxes.map ((elem, i) => {
+            myPunxes[i].x += -blockspeed;
+                myPunxes[i].update();
+            if (blockspeed<8)
+                blockspeed=blockspeed*1.00001;
+            else
+                blockspeed=8
+        });
+        //drawing the spikes of the beggining       
         drawspikes();
         myScore.text="SCORE: " + myGameArea.frameNo;
         myScore.update();
@@ -577,15 +630,15 @@ canvas {
         myGamePiece.update();
     }
     
-    function everyinterval(n) {
+     everyinterval = (n) => {
         if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
         return false;
     }
     
-    function getRandomInt(min, max) {
+    getRandomInt = (min, max) => {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    function sleep(miliseconds) {
+    sleep = (miliseconds) => {
        var currentTime = new Date().getTime();
        while (currentTime + miliseconds >= new Date().getTime()) {
        }
