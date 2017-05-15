@@ -386,48 +386,47 @@ canvas {
         this.gravitySpeed = 0;
         this.right = false;
         this.left = false;
-        
-            //function to determine the type of the instance parameter and draw/do some stuff about it with a update
-            this.update = () => {
-            ctx = myGameArea.context;
-            if (this.type == "sprite") {
-                var sprite = sprites[numsprite];    
-                if (count < 10) {
-                    numsprite = 0;                
-                }
-                else if (count <= 20) {
-                    numsprite=1;
-                    if (count == 20){
-                        count = 0;
-                    }                           
-                }
-                ctx.drawImage(imatge, sprite.x, sprite.y, sprite.w, sprite.h, this.x, this.y, sprite.w, sprite.h);
-                count+=1;
+        //function to determine the type of the instance parameter and draw/do some stuff about it with a update
+        this.update = () => {
+        ctx = myGameArea.context;
+        if (this.type == "sprite") {
+            var sprite = sprites[numsprite];    
+            if (count < 10) {
+                numsprite = 0;                
+            }
+            else if (count <= 20) {
+                numsprite=1;
+                if (count == 20){
+                    count = 0;
+                }                           
+            }
+            ctx.drawImage(imatge, sprite.x, sprite.y, sprite.w, sprite.h, this.x, this.y, sprite.w, sprite.h);
+            count+=1;
 
-                document.body.onkeydown = (event) => {
-                    event = event || window.event;
-                    var keycode = event.charCode || event.keyCode;
-                    if(keycode === 32 || keycode === 87 || keycode === 38){
-                        if ((myGamePiece.y + (myGamePiece.height)) >= terra) {
-                            myGamePiece.jump();
-                        }
-                    } else if(keycode === 39 || keycode === 68){
-                        myGamePiece.right = true;
-                    } else if(keycode === 37 || keycode === 65){
-                        myGamePiece.left = true;
-                    }              
-                }
-            
-                document.body.onkeyup = (event) =>{
-                    event = event || window.event;
-                    var keycode = event.charCode || event.keyCode;
-                    if(keycode === 39 || keycode === 68){
-                        myGamePiece.right = false;
-                    } else if(keycode === 37 || keycode === 65){
-                        myGamePiece.left = false;
+            document.body.onkeydown = (event) => {
+                event = event || window.event;
+                var keycode = event.charCode || event.keyCode;
+                if(keycode === 32 || keycode === 87 || keycode === 38){
+                    if ((myGamePiece.y + (myGamePiece.height)) >= terra) {
+                        myGamePiece.jump();
                     }
+                } else if(keycode === 39 || keycode === 68){
+                    myGamePiece.right = true;
+                } else if(keycode === 37 || keycode === 65){
+                    myGamePiece.left = true;
+                }              
+            }
+        
+            document.body.onkeyup = (event) =>{
+                event = event || window.event;
+                var keycode = event.charCode || event.keyCode;
+                if(keycode === 39 || keycode === 68){
+                    myGamePiece.right = false;
+                } else if(keycode === 37 || keycode === 65){
+                    myGamePiece.left = false;
                 }
-                
+            }
+
                 if (myGamePiece.right)
                     myGamePiece.moveRight();
                 if (myGamePiece.left)
@@ -608,19 +607,13 @@ canvas {
         myObstacles.map ((elem, i) => {
             myObstacles[i].x += -blockspeed;
             myObstacles[i].update();
-            if (blockspeed<8)
-                blockspeed=blockspeed*1.00001;
-            else
-                blockspeed=8
+             (blockspeed<8) ? blockspeed=blockspeed*1.00001 : blockspeed=8
         });
         //map to update the speed of the object coliders and inicialize the update of the constructor
         myPunxes.map ((elem, i) => {
             myPunxes[i].x += -blockspeed;
                 myPunxes[i].update();
-            if (blockspeed<8)
-                blockspeed=blockspeed*1.00001;
-            else
-                blockspeed=8
+             (blockspeed<8) ? blockspeed=blockspeed*1.00001 : blockspeed=8
         });
         //drawing the spikes of the beggining       
         drawspikes();
